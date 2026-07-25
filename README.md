@@ -4,12 +4,12 @@
 
 [![Tests](https://github.com/avatharbe/bbguildlineage2/actions/workflows/tests.yml/badge.svg)](https://github.com/avatharbe/bbguildlineage2/actions/workflows/tests.yml)
 
-Lineage 2 guilds are clans in the truest sense — castle sieges and open-world clan warfare have driven its community since launch, a very different culture from PvE raid guilds elsewhere, and one that rewards knowing exactly who's fielding what. bbguildlineage2 covers the full 110-class progression tree from base classes through to their awakened forms, all 7 races with gender-specific images, and boss/zone links straight to Lineage 2 Online. That's enough granularity to track a clan's real siege composition, not just a rough headcount.
+Lineage 2 guilds are clans in the truest sense — castle sieges and open-world clan warfare have driven its community since launch, a very different culture from PvE raid guilds elsewhere, and one that rewards knowing exactly who's fielding what. bbguildlineage2 covers the full 110-class progression tree from base classes through to their awakened forms, all 6 races with gender-specific images, and boss/zone links straight to Lineage 2 Online. That's enough granularity to track a clan's real siege composition, not just a rough headcount.
 
 ## Features
 
 - **Lineage 2 Classes** - 110 classes covering all class progressions from base to awakened (Human, Elf, Dark Elf, Orc, Dwarf, Kamael, Awakened)
-- **Lineage 2 Races** - 7 playable races (Human, Elf, Dark Elf, Orc, Dwarf, Kamael, Ertheia) with gender-specific images
+- **Lineage 2 Races** - 6 playable races (Human, Elf, Dark Elf, Orc, Dwarf, Kamael) with gender-specific images
 - **Factions** - Default faction
 - **Database Links** - Boss and zone URLs linked to Lineage 2 Online
 
@@ -49,17 +49,17 @@ Lineage 2 guilds are clans in the truest sense — castle sieges and open-world 
 | Kamael | 90-101 | 12 | Kamael Soldier, Trooper, Warder, Berserker, Soul Breaker, ... |
 | Awakened | 102-109 | 8 | Sigel Knight, Tyrr Warrior, Othell Rogue, Yul Archer, ... |
 
-### Races (7)
+### Races (6)
 
 | ID | Race |
 |----|------|
-| 0 | Human |
-| 1 | Elf |
-| 2 | Dark Elf |
-| 3 | Orc |
+| 0 | Unknown |
+| 1 | Human |
+| 2 | Elf |
+| 3 | Dark Elf |
 | 4 | Dwarf |
-| 5 | Kamael |
-| 6 | Ertheia |
+| 5 | Orc |
+| 6 | Kamael |
 
 ## License
 

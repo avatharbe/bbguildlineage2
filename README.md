@@ -1,4 +1,7 @@
 # bbGuild - Lineage 2
+
+**Current version:** 2.0.0-rc1 (release candidate)
+
 [![Tests](https://github.com/avatharbe/bbguildlineage2/actions/workflows/tests.yml/badge.svg)](https://github.com/avatharbe/bbguildlineage2/actions/workflows/tests.yml)
 
 Lineage 2 guilds are clans in the truest sense — castle sieges and open-world clan warfare have driven its community since launch, a very different culture from PvE raid guilds elsewhere, and one that rewards knowing exactly who's fielding what. bbguildlineage2 covers the full 110-class progression tree from base classes through to their awakened forms, all 7 races with gender-specific images, and boss/zone links straight to Lineage 2 Online. That's enough granularity to track a clan's real siege composition, not just a rough headcount.

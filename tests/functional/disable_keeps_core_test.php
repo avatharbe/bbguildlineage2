@@ -70,13 +70,13 @@ class avathar_bbguildlineage2_disable_keeps_core_test extends phpbb_functional_t
 
 		// Control guild page must still render.
 		self::request('GET', 'guild/' . self::CONTROL_GUILD_ID);
-		$this->assertEquals(200, self::$client->getResponse()->getStatusCode(), 'control guild page must still render with bbguildlineage2 disabled');
+		$this->assertEquals(200, self::$client->getResponse()->getStatus(), 'control guild page must still render with bbguildlineage2 disabled');
 
 		// bbguild core's ACP game list must still load.
 		$this->login();
 		$this->admin_login();
 		self::request('GET', 'adm/index.php?i=-avathar-bbguild-acp-game_module&mode=listgames&sid=' . $this->sid);
-		$this->assertEquals(200, self::$client->getResponse()->getStatusCode(), 'bbguild core ACP game list must still load with bbguildlineage2 disabled');
+		$this->assertEquals(200, self::$client->getResponse()->getStatus(), 'bbguild core ACP game list must still load with bbguildlineage2 disabled');
 
 		// Re-enable so later tests in the same suite run are unaffected.
 		$this->install_ext('avathar/bbguildlineage2');

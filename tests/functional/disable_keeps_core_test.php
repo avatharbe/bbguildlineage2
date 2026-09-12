@@ -77,8 +77,11 @@ class avathar_bbguildlineage2_disable_keeps_core_test extends phpbb_functional_t
 		$this->admin_login();
 		self::request('GET', 'adm/index.php?i=-avathar-bbguild-acp-game_module&mode=listgames&sid=' . $this->sid);
 		$this->assertEquals(200, self::$client->getResponse()->getStatus(), 'bbguild core ACP game list must still load with bbguildlineage2 disabled');
+		$this->logout();
 
 		// Re-enable so later tests in the same suite run are unaffected.
+		// (install_ext() drives its own login flow internally too — same
+		// reason the earlier calls in this method run logged-out first.)
 		$this->install_ext('avathar/bbguildlineage2');
 	}
 

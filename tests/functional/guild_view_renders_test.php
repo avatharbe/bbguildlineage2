@@ -46,6 +46,7 @@ class avathar_bbguildlineage2_guild_view_renders_test extends phpbb_functional_t
 		// imagename lineage2_hfighter), race_id=1 (Human).
 		$db->sql_query('DELETE FROM ' . $prefix . 'bb_players WHERE player_guild_id = ' . self::GUILD_ID);
 		$db->sql_query('DELETE FROM ' . $prefix . 'bb_portal_modules WHERE guild_id = ' . self::GUILD_ID);
+		$db->sql_query('DELETE FROM ' . $prefix . 'bb_ranks WHERE guild_id = ' . self::GUILD_ID);
 		$db->sql_query('DELETE FROM ' . $prefix . 'bb_guild WHERE id = ' . self::GUILD_ID);
 
 		$db->sql_query('INSERT INTO ' . $prefix . 'bb_guild ' . $db->sql_build_array('INSERT', array(
@@ -65,6 +66,19 @@ class avathar_bbguildlineage2_guild_view_renders_test extends phpbb_functional_t
 			'armoryresult'   => '',
 			'recruitforum'   => 0,
 			'faction'        => 1,
+		)));
+
+		// getplayerlist() inner-joins bb_ranks on (guild_id, rank_id,
+		// rank_hide=0) — without this row the player below is silently
+		// excluded from the roster query regardless of everything else
+		// being correct.
+		$db->sql_query('INSERT INTO ' . $prefix . 'bb_ranks ' . $db->sql_build_array('INSERT', array(
+			'guild_id'    => self::GUILD_ID,
+			'rank_id'     => 0,
+			'rank_name'   => 'Guild Leader',
+			'rank_hide'   => 0,
+			'rank_prefix' => '',
+			'rank_suffix' => '',
 		)));
 
 		$db->sql_query('INSERT INTO ' . $prefix . 'bb_players ' . $db->sql_build_array('INSERT', array(

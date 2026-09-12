@@ -113,7 +113,7 @@ class avathar_bbguildlineage2_guild_view_renders_test extends phpbb_functional_t
 		$this->login();
 		$crawler = self::request('GET', 'guild/' . self::GUILD_ID);
 
-		$this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+		$this->assertEquals(200, self::$client->getResponse()->getStatusCode());
 
 		$html = $crawler->html();
 		$this->assertStringContainsString(

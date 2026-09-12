@@ -62,19 +62,21 @@ class avathar_bbguildlineage2_disable_keeps_core_test extends phpbb_functional_t
 			'faction'        => 1,
 		)));
 
-		$this->login();
-
-		// Disable this plugin.
+		// Note: disable_ext()/install_ext() drive their own login flow
+		// internally (they assert a logged-out state before authenticating);
+		// logging in manually beforehand makes that assertion fail against
+		// an already-authenticated session. Let them manage auth themselves.
 		$this->disable_ext('avathar/bbguildlineage2');
 
 		// Control guild page must still render.
 		self::request('GET', 'guild/' . self::CONTROL_GUILD_ID);
-		$this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'control guild page must still render with bbguildlineage2 disabled');
+		$this->assertEquals(200, self::$client->getResponse()->getStatusCode(), 'control guild page must still render with bbguildlineage2 disabled');
 
 		// bbguild core's ACP game list must still load.
+		$this->login();
 		$this->admin_login();
 		self::request('GET', 'adm/index.php?i=-avathar-bbguild-acp-game_module&mode=listgames&sid=' . $this->sid);
-		$this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'bbguild core ACP game list must still load with bbguildlineage2 disabled');
+		$this->assertEquals(200, self::$client->getResponse()->getStatusCode(), 'bbguild core ACP game list must still load with bbguildlineage2 disabled');
 
 		// Re-enable so later tests in the same suite run are unaffected.
 		$this->install_ext('avathar/bbguildlineage2');

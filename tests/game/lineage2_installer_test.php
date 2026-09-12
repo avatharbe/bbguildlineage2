@@ -91,6 +91,29 @@ class lineage2_installer_test extends TestCase
 		$method->invoke($this->installer);
 	}
 
+	/**
+	 * Set (key => value) or remove (value === null) a single entry in the
+	 * installer's table_names map, on top of whatever setUp() put there.
+	 */
+	private function set_table_name(string $key, ?string $value): void
+	{
+		$ref = new \ReflectionClass($this->installer);
+		$tn = $ref->getProperty('table_names');
+		$tn->setAccessible(true);
+		$current = $tn->getValue($this->installer);
+
+		if ($value === null)
+		{
+			unset($current[$key]);
+		}
+		else
+		{
+			$current[$key] = $value;
+		}
+
+		$tn->setValue($this->installer, $current);
+	}
+
 	// ── Factions ───────────────────────────────────────────
 
 	public function test_install_factions_count(): void
@@ -241,5 +264,35 @@ class lineage2_installer_test extends TestCase
 		$method = new \ReflectionMethod(lineage2_installer::class, 'has_api_support');
 		$method->setAccessible(true);
 		$this->assertFalse($method->invoke($this->installer));
+	}
+
+	// ── Specializations (install_specs) ─────────────────────
+	//
+	// lineage2_provider::spec_catalog() is deliberately empty — see its
+	// docblock. Lineage 2's install_classes() already seeds every class down
+	// to its terminal Awakening-tier build as its own class_id; there is no
+	// further class_id-keyed spec layer in the real game that fits this
+	// interface's shape (see provider docblock for the Talent Tree / Subclass
+	// systems considered and rejected as not fitting). These tests confirm
+	// install_specs() honestly seeds nothing, and still no-ops cleanly when
+	// the specializations table isn't wired in — mirroring
+	// gw2_installer_test.php's shape for both branches.
+
+	public function test_install_specs_seeds_nothing_when_table_wired(): void
+	{
+		$this->set_table_name('bb_specializations_table', 'phpbb_bb_specializations');
+
+		$this->invoke_protected('install_specs');
+
+		$this->assertCount(0, $this->inserted, 'lineage2 has no spec layer to seed — spec_catalog() is confirmed empty');
+	}
+
+	public function test_install_specs_skips_when_table_not_wired(): void
+	{
+		$this->set_table_name('bb_specializations_table', null);
+
+		$this->invoke_protected('install_specs');
+
+		$this->assertCount(0, $this->inserted, 'install_specs() must no-op when bb_specializations_table is not in table_names');
 	}
 }

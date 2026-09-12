@@ -10,8 +10,9 @@
 namespace avathar\bbguildlineage2\game;
 
 use avathar\bbguild\model\games\game_provider_interface;
+use avathar\bbguild\model\games\specialization_provider_interface;
 
-class lineage2_provider implements game_provider_interface
+class lineage2_provider implements game_provider_interface, specialization_provider_interface
 {
 	/** @var lineage2_installer */
 	private $installer;
@@ -85,5 +86,55 @@ class lineage2_provider implements game_provider_interface
 			'LEATHER' => 'Leather',
 			'HEAVY'   => 'Heavy',
 		);
+	}
+
+	/**
+	 * Specialization catalog (issue #331 / bbguild #331) — deliberately empty.
+	 *
+	 * Lineage 2's install_classes() (see game/lineage2_installer.php) already
+	 * seeds all 110 classes down to their most granular, terminal build: the
+	 * 1st (lvl 20) -> 2nd (lvl 40) -> 3rd/final occupation (lvl 76) chain,
+	 * AND the level-85 Awakening tier (class_id 102-109: Sigel Knight, Tyrr
+	 * Warrior, Feoh Wizard, Othell Rogue, Iss Enchanter, Wynn Summoner, Yul
+	 * Archer, Aeore Healer), each already its own distinct class_id. There is
+	 * no further class_id-keyed "pick one of several named specs with their
+	 * own role" layer beyond that in the real game:
+	 *
+	 * - The only other post-3rd-class system, the Talent Tree (Power /
+	 *   Mastery / Protection branches unlocked at level 80), is a universal
+	 *   point-buy tree identical for every class — not a named per-class
+	 *   spec choice, so it doesn't fit this interface's per-class catalog
+	 *   shape (spec_name/role_id varying by class_id).
+	 * - "Subclass" / dual class is a parallel alt-character system (add
+	 *   entire additional classes to level up separately on the same
+	 *   character), not a specialization of the main class.
+	 *
+	 * So this plugin has genuinely nothing to seed here — an honestly empty
+	 * catalog, not a gap. Per the interface's own docblock: "Plugins that
+	 * already seeded specs return []."
+	 *
+	 * @return array<int, list<array{spec_name:string,role_id:int,spec_icon:string,spec_order:int}>>
+	 */
+	public static function spec_catalog(): array
+	{
+		return array();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function get_spec_label(): string
+	{
+		return 'Specialization';
+	}
+
+	/**
+	 * Interface implementation: delegates to the static (empty) catalog.
+	 *
+	 * @return array<int, list<array{spec_name:string,role_id:int,spec_icon:string,spec_order:int}>>
+	 */
+	public function get_specializations(): array
+	{
+		return self::spec_catalog();
 	}
 }

@@ -46,6 +46,7 @@ class avathar_bbguildlineage2_guild_view_renders_test extends phpbb_functional_t
 		// imagename lineage2_hfighter), race_id=1 (Human).
 		$db->sql_query('DELETE FROM ' . $prefix . 'bb_players WHERE player_guild_id = ' . self::GUILD_ID);
 		$db->sql_query('DELETE FROM ' . $prefix . 'bb_portal_modules WHERE guild_id = ' . self::GUILD_ID);
+		$db->sql_query('DELETE FROM ' . $prefix . 'bb_portal_tabs WHERE guild_id = ' . self::GUILD_ID);
 		$db->sql_query('DELETE FROM ' . $prefix . 'bb_ranks WHERE guild_id = ' . self::GUILD_ID);
 		$db->sql_query('DELETE FROM ' . $prefix . 'bb_guild WHERE id = ' . self::GUILD_ID);
 
@@ -107,10 +108,26 @@ class avathar_bbguildlineage2_guild_view_renders_test extends phpbb_functional_t
 			'last_update'         => time(),
 		)));
 
+		// Seed a portal tab first -- portal_renderer::render() bails out
+		// before ever looking at bb_portal_modules when a guild has zero
+		// tabs (bbguild#360's page-level tabs; see also #374, which
+		// backfills this for guilds created through the normal ACP flow,
+		// but a fixture inserting rows directly via SQL bypasses that flow
+		// entirely and needs to seed its own tab).
+		$db->sql_query('INSERT INTO ' . $prefix . 'bb_portal_tabs ' . $db->sql_build_array('INSERT', array(
+			'guild_id'   => self::GUILD_ID,
+			'tab_name'   => 'Overview',
+			'tab_slug'   => 'welcome',
+			'tab_order'  => 0,
+			'tab_status' => 1,
+		)));
+		$tab_id = (int) $db->sql_nextid();
+
 		// Roster portal module for this guild (center column, matching the
 		// layout bbguild core's own sample-guild migration uses).
 		$db->sql_query('INSERT INTO ' . $prefix . 'bb_portal_modules ' . $db->sql_build_array('INSERT', array(
 			'guild_id'            => self::GUILD_ID,
+			'module_tab'          => $tab_id,
 			'module_classname'    => '\avathar\bbguild\portal\modules\roster',
 			'module_column'       => 2,
 			'module_order'        => 1,

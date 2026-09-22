@@ -121,7 +121,7 @@ class avathar_bbguildlineage2_guild_view_renders_test extends phpbb_functional_t
 			'tab_order'  => 0,
 			'tab_status' => 1,
 		)));
-		$tab_id = (int) $db->sql_nextid();
+		$tab_id = (int) $db->sql_last_inserted_id();
 
 		// Roster portal module for this guild (center column, matching the
 		// layout bbguild core's own sample-guild migration uses).
